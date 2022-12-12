@@ -63,25 +63,26 @@ app.delete("/api/persons/:id", (request, response) => {
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
-  console.log(body)
-    try {
-        
-        const person = {
-            name: body.name,
-            number: body.number,
-            id: generateId(),
-          };
-        
-          persons = persons.concat(person);
-        
-          response.json(person);
+  console.log(body);
+  try {
+    const person = {
+      name: body.name,
+      number: body.number,
+      id: generateId(),
+    };
 
-    } catch (error) {
-        response.status(400).end();
-
+    if (!body.name || !body.number) {
+      return response.status(400).json({
+        error: "content missing",
+      });
     }
 
-  
+    persons = persons.concat(person);
+
+    response.json(person);
+  } catch (error) {
+    return response.status(400).end();
+  }
 });
 
 const PORT = 3001;
