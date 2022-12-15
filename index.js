@@ -63,6 +63,22 @@ app.delete("/api/persons/:id", (request, response) => {
   response.status(204).end();
 });
 
+app.put("/api/persons/:id", (request, response) => {
+    const id = Number(request.params.id);
+    const body = request.body;
+
+    const updatedPerson = {
+        id: id,
+        name: body.name,
+        number:body.number,
+    };
+
+    persons = persons.map(( person => person.id !== id ? person : updatedPerson ))
+    
+    response.json(persons);
+    response.status(204).end();
+  });
+
 app.post("/api/persons", (request, response) => {
   const body = request.body;
   console.log(body);
@@ -92,7 +108,7 @@ app.post("/api/persons", (request, response) => {
   }
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
